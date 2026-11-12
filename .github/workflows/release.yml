@@ -1,6 +1,9 @@
 name: Release
 
 # Push a tag to publish: v<remnawave-api-version>[.<revision>], e.g. v3.4.10 or v3.4.10.1 for a client-only fix.
+#   v3.4.10-rc.1      -> published to NuGet as a pre-release
+#   v3.4.10-dryrun.1  -> dry run: test, pack and NuGet login (validates the Trusted Publishing policy),
+#                        but nothing is pushed or released. Delete the tag afterwards.
 #
 # Publishing uses NuGet Trusted Publishing (no stored API key). Setup:
 #   - nuget.org → username → Trusted Publishing: owner serkvuz, repo remnawave-dotnet,
@@ -35,6 +38,8 @@ jobs:
             *) echo "::error::Tag $GITHUB_REF_NAME does not match spec/VERSION ($API_VERSION)"; exit 1 ;;
           esac
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          case "$VERSION" in *-dryrun*) echo "dry_run=true" >> "$GITHUB_OUTPUT" ;; *) echo "dry_run=false" >> "$GITHUB_OUTPUT" ;; esac
+          case "$VERSION" in *-*) echo "prerelease=--prerelease" >> "$GITHUB_OUTPUT" ;; *) echo "prerelease=" >> "$GITHUB_OUTPUT" ;; esac
 
       - name: Test
         run: dotnet test -c Release
@@ -50,9 +55,18 @@ jobs:
           user: ${{ vars.NUGET_USER }}
 
       - name: Push to NuGet.org
+        if: steps.version.outputs.dry_run != 'true'
         run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ steps.nuget.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
+      - name: Dry run summary
+        if: steps.version.outputs.dry_run == 'true'
+        run: |
+          echo "Dry run OK: tests passed, package built, NuGet Trusted Publishing login succeeded."
+          echo "Nothing was pushed. Packages that would be published:"
+          ls -l artifacts/packages
+
       - name: GitHub release
+        if: steps.version.outputs.dry_run != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" artifacts/packages/* --generate-notes --title "Remnawave.Client ${{ steps.version.outputs.version }}"
+        run: gh release create "$GITHUB_REF_NAME" artifacts/packages/* --generate-notes ${{ steps.version.outputs.prerelease }} --title "Remnawave.Client ${{ steps.version.outputs.version }}"

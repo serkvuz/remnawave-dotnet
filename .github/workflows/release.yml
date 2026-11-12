@@ -1,12 +1,18 @@
 name: Release
 
 # Push a tag to publish: v<remnawave-api-version>[.<revision>], e.g. v3.4.10 or v3.4.10.1 for a client-only fix.
+#
+# Publishing uses NuGet Trusted Publishing (no stored API key). Setup:
+#   - nuget.org → username → Trusted Publishing: owner serkvuz, repo remnawave-dotnet,
+#     workflow release.yml, environment nuget, package Remnawave.Client
+#   - GitHub repo variable NUGET_USER = your nuget.org username (profile name, not email)
 on:
   push:
     tags: ['v*']
 
 permissions:
-  contents: write # GitHub release
+  contents: write   # GitHub release
+  id-token: write   # OIDC token for NuGet Trusted Publishing
 
 jobs:
   publish:
@@ -36,8 +42,15 @@ jobs:
       - name: Pack
         run: dotnet pack src/Remnawave.Client -c Release -p:Version=${{ steps.version.outputs.version }} -o artifacts/packages
 
+      # Requested right before the push: the temporary key is valid for 1 hour.
+      - name: NuGet login (Trusted Publishing)
+        id: nuget
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+
       - name: Push to NuGet.org
-        run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ steps.nuget.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: GitHub release
         env:

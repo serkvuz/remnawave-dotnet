@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>Remnawave.Client</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
+
+    <PackageId>Remnawave.Client</PackageId>
+    <Description>Strongly-typed, trimming/AOT-friendly .NET client for the Remnawave panel API, generated from the official OpenAPI document. Unofficial.</Description>
+    <PackageTags>remnawave;xray;vpn;proxy;api;client;sdk;kiota;openapi</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Package version follows the Remnawave API version it targets (spec/VERSION); override with -p:Version=... -->
+    <RemnawaveApiVersion>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../../spec/VERSION').Trim())</RemnawaveApiVersion>
+    <Version Condition="'$(Version)' == '' or '$(Version)' == '1.0.0'">$(RemnawaveApiVersion)</Version>
+  </PropertyGroup>
+
+  <!-- Kiota output contains members without XML docs and intentional obsolete overloads. -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS1591;CS0618;CS8618;CS8602;CS8604;CS8765</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Kiota.Abstractions" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>RemnawaveApiVersion</_Parameter1>
+      <_Parameter2>$(RemnawaveApiVersion)</_Parameter2>
+    </AssemblyAttribute>
+    <InternalsVisibleTo Include="Remnawave.Client.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Runtime: Kiota (versions must match the Kiota generator family, see .config/dotnet-tools.json) -->
+    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="2.1.6" />
+    <PackageVersion Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="2.1.6" />
+    <PackageVersion Include="Microsoft.Kiota.Serialization.Json" Version="2.1.6" />
+    <!-- Lowest supported versions; consumers on newer runtimes resolve newer ones automatically. -->
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <!-- Tests / samples -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.1" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.15" />
+  </ItemGroup>
+</Project>

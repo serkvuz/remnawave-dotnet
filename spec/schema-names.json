@@ -1,0 +1,19 @@
+{
+  "Host": "RemnawaveHost",
+  "Status": "AuthStatus",
+  "StatusAuthentication": "AuthStatusAuthentication",
+  "StatusAuthenticationOauth2": "AuthStatusOauth2",
+  "StatusAuthenticationPasskey": "AuthStatusPasskey",
+  "StatusBranding": "AuthStatusBranding",
+  "Login": "LoginResult",
+  "Stats": "SystemStats",
+  "StatsCpu": "SystemStatsCpu",
+  "StatsMemory": "SystemStatsMemory",
+  "StatsUsers": "SystemStatsUsers",
+  "StatsNodes": "SystemStatsNodes",
+  "StatsOnlineStats": "SystemStatsOnline",
+  "Recap": "SystemRecap",
+  "RecapThisMonth": "SystemRecapThisMonth",
+  "RecapTotal": "SystemRecapTotal",
+  "Configuration": "SystemConfiguration"
+}

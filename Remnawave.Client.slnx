@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Remnawave.Client/Remnawave.Client.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Remnawave.Client.Sample/Remnawave.Client.Sample.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Remnawave.Client.Tests/Remnawave.Client.Tests.csproj" />
+  </Folder>
+</Solution>

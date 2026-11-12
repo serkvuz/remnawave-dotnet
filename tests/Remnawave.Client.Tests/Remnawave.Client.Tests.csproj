@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- `-p:LibraryTargetFramework=netstandard2.0` runs the suite against another build of the library. -->
+    <ProjectReference Include="../../src/Remnawave.Client/Remnawave.Client.csproj" Condition="'$(LibraryTargetFramework)' == ''" />
+    <ProjectReference Include="../../src/Remnawave.Client/Remnawave.Client.csproj" Condition="'$(LibraryTargetFramework)' != ''"
+                      SetTargetFramework="TargetFramework=$(LibraryTargetFramework)" />
+  </ItemGroup>
+
+</Project>

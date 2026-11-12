@@ -43,7 +43,7 @@ jobs:
       - name: Test against the netstandard2.0 and net8.0 builds
         run: |
           for tfm in netstandard2.0 net8.0; do
-            dotnet test tests/Remnawave.Client.Tests -c Release -p:LibraryTargetFramework=$tfm
+            dotnet test --project tests/Remnawave.Client.Tests -c Release -p:LibraryTargetFramework=$tfm
           done
 
       - name: Native AOT check (sample must publish without IL warnings)

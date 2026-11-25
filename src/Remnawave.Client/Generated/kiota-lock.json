@@ -2,7 +2,7 @@
   "descriptionHash": "15A4F6CA22A0CDB80D96400042BD9E1293DF387F4433BBC1530F2838E43EDE2F50EE06DAB7482D82FAFC4C3822D571EA329DF19B6C610B7EB7346AC1C8E7BE21",
   "descriptionLocation": "../../../spec/remnawave-openapi.processed.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.38.0",
+  "kiotaVersion": "1.39.0",
   "clientClassName": "RemnawaveApiClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "Remnawave.Client",

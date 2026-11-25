@@ -7,3 +7,6 @@ artifacts/
 TestResults/
 *.nupkg
 *.snupkg
+
+# Kiota run log: varies with network (update check), not part of the generated code
+.kiota.log
